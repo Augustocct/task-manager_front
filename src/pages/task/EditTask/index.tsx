@@ -29,7 +29,7 @@ const EditTask = () => {
     axios
       .get(`http://localhost:8080/api/v1/task/${taskId}`, {
         params: {},
-      })
+      })    
       .then((response) => {
         setTasks(response.data); // Ajuste conforme a estrutura da sua resposta
       })
