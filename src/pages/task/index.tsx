@@ -18,8 +18,8 @@ interface Task {
   name: string;
   status: string;
   priority: number;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
 }
 
 const Task = () => {
