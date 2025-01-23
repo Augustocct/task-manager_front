@@ -1,12 +1,10 @@
-import SendIcon from "@mui/icons-material/Send";
-import BackIcon from "@mui/icons-material/ArrowBack";
 import { Button, Grid2, TextField } from "@mui/material";
+import BackIcon from "@mui/icons-material/ArrowBack";
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface Task {
-  id: number;
   name: string;
   description: string;
   status: string;
@@ -15,14 +13,8 @@ interface Task {
   endDate: Date;
 }
 
-const EditTask = () => {
-  const { id } = useParams();
-  const taskId = Number(id);
-
-  const navigate = useNavigate();
-
+const NewTask = () => {
   const [tasks, setTasks] = useState<Task>({
-    id: taskId,
     name: "",
     description: "",
     status: "",
@@ -31,32 +23,15 @@ const EditTask = () => {
     endDate: new Date(),
   });
 
-  function searchTasks() {
-    axios
-      .get(`http://localhost:8080/api/v1/task/${taskId}`, {
-        params: {},
-      })
-      .then((response) => {
-        const taskData = response.data.data;
-        // Ajuste conforme a estrutura da sua resposta
-        setTasks(response.data.data);
-        // Ajuste conforme a estrutura da sua resposta
-        taskData.startDate = taskData.startDate.split("T")[0];
-        taskData.endDate = taskData.endDate.split("T")[0];
-        console.log(response.data.data);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar os dados:", error);
-      });
-  }
+  const navigate = useNavigate();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     setTasks({
       ...tasks,
       [name]: value, // Atualiza apenas o campo alterado
     });
-  };
+  }
 
   function validateForm() {
     let isValid = true;
@@ -87,25 +62,20 @@ const EditTask = () => {
     return isValid
   }
 
-  const handleEditTask = async (id: number, taskEditData: Task) => {
+  function handleClickSave() {
     if (!validateForm()) {
       return;
     }
-    try {
-      const response = await axios.post(
-        `http://localhost:8080/api/v1/task/edit/${id}`,
-        taskEditData
-      );
-      console.log("Resposta do servidor:", response.data);
-    } catch (error) {
-      console.error("Erro ao editar a tarefa:", error);
-    }
+    axios
+      .post("http://localhost:8080/api/v1/task/new", tasks)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao salvar os dados:", error);
+      });
     navigate("/task");
-  };
-
-  useEffect(() => {
-    searchTasks();
-  }, []);
+  }
 
   return (
     <Grid2 container spacing={2}>
@@ -176,15 +146,9 @@ const EditTask = () => {
         }}
         onChange={handleChange}
       />
-      <Button
-        variant="contained"
-        endIcon={<SendIcon />}
-        onClick={() => handleEditTask(taskId, tasks)}
-      >
-        Send
-      </Button>
+      <button onClick={handleClickSave}>Salvar</button>
     </Grid2>
   );
 };
 
-export default EditTask;
+export default NewTask;
