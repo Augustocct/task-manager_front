@@ -62,6 +62,21 @@ const NewTask = () => {
     return isValid
   }
 
+  function searchTasks() {
+    axios
+      .post(`http://localhost:8080/api/v1/task/list?size=5`, {
+        params: {
+        },
+      })
+      .then((response) => {
+        setTasks(response.data.data.content); // Ajuste conforme a estrutura da sua resposta
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar os dados:", error);
+      });
+  }
+
   function handleClickSave() {
     if (!validateForm()) {
       return;
@@ -75,6 +90,7 @@ const NewTask = () => {
         console.error("Erro ao salvar os dados:", error);
       });
     navigate("/task");
+    searchTasks();
   }
 
   return (
