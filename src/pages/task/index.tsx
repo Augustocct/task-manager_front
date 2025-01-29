@@ -32,16 +32,26 @@ interface Task {
 
 const Task = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const navigate = useNavigate();
 
-  function searchTasks() {
+  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value); // Atualiza a página selecionada
+    searchTasks(value); // Chama a função para buscar os dados da nova página
+  };
+
+  function searchTasks(pageNumber: number) {
     axios
-      .post(`http://localhost:8080/api/v1/task/list`, {
-        params: {},
+      .get(`http://localhost:8080/api/v1/task/list?size=5`, {
+        params: {
+          page: pageNumber - 1,
+        },
       })
       .then((response) => {
         setTasks(response.data.data.content); // Ajuste conforme a estrutura da sua resposta
+        setTotalPages(response.data.data.totalPages); // Ajuste conforme a estrutura da sua resposta
         console.log(response.data);
       })
       .catch((error) => {
@@ -60,7 +70,7 @@ const Task = () => {
       })
       .then((response) => {
         console.log(response.data);
-        searchTasks();
+        searchTasks(page);
       })
       .catch((error) => {
         console.error("Erro ao deletar os dados:", error);
@@ -68,7 +78,7 @@ const Task = () => {
   };
 
   useEffect(() => {
-    searchTasks();
+    searchTasks(page);
   }, []);
 
   return (
@@ -137,7 +147,7 @@ const Task = () => {
               Novo
             </Button>
             <Stack spacing={2}>
-              <Pagination />
+              <Pagination count={totalPages} page={page} onChange={handleChangePage} />
             </Stack>
           </Box>
         </TableContainer>
