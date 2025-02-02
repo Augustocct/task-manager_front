@@ -37,7 +37,7 @@ const Task = () => {
 
   const navigate = useNavigate();
 
-  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChangePage = (event: React.ChangeEvent<any>, value: number) => {
     setPage(value); // Atualiza a página selecionada
     searchTasks(value); // Chama a função para buscar os dados da nova página
   };
@@ -84,7 +84,7 @@ const Task = () => {
   return (
     <Container style={{ minHeight: "80vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
       <Box width={"100%"} display={"flex"} justifyContent={"center"} alignItems={"center"}>
-      <h1>Lista de Tarefas</h1>
+      <h1 style={{fontFamily: "cursive"}}>Lista de Tarefas</h1>
       </Box>
       <Box
         display={"flex"}
@@ -96,24 +96,24 @@ const Task = () => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>NOME</TableCell>
-                <TableCell>STATUS</TableCell>
-                <TableCell>PRIORIDADE</TableCell>
-                <TableCell>DATA DE INICIO</TableCell>
-                <TableCell>DATA FINAL</TableCell>
-                <TableCell>AÇÔES</TableCell>
+                <TableCell style= {{fontFamily: "cursive"}}>ID</TableCell>
+                <TableCell style= {{fontFamily: "cursive"}}>NOME</TableCell>
+                <TableCell style= {{fontFamily: "cursive"}}>STATUS</TableCell>
+                <TableCell style= {{fontFamily: "cursive"}}>PRIORIDADE</TableCell>
+                <TableCell style= {{fontFamily: "cursive"}}>DATA DE INICIO</TableCell>
+                <TableCell style= {{fontFamily: "cursive"}}>DATA FINAL</TableCell>
+                <TableCell style= {{fontFamily: "cursive"}}>AÇÔES</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {tasks.map((task) => (
                 <TableRow key={task.id}>
-                  <TableCell>{task.id}</TableCell>
-                  <TableCell>{task.name}</TableCell>
-                  <TableCell>{task.status}</TableCell>
-                  <TableCell>{task.priority}</TableCell>
-                  <TableCell>{task.startDate.toString()}</TableCell>
-                  <TableCell>{task.endDate.toString()}</TableCell>
+                  <TableCell style= {{fontFamily: "cursive"}}>{task.id}</TableCell>
+                  <TableCell style= {{fontFamily: "cursive"}}>{task.name}</TableCell>
+                  <TableCell style= {{fontFamily: "cursive"}}>{task.status}</TableCell>
+                  <TableCell style= {{fontFamily: "cursive"}}>{task.priority}</TableCell>
+                  <TableCell style= {{fontFamily: "cursive"}}>{task.startDate.toString()}</TableCell>
+                  <TableCell style= {{fontFamily: "cursive"}}>{task.endDate.toString()}</TableCell>
                   <TableCell sx={{ display: "flex", gap: 1 }}>
                     <Fab
                       color="primary"
@@ -143,6 +143,7 @@ const Task = () => {
               variant="contained"
               endIcon={<PlusIcon />}
               onClick={() => navigate("/new-task")}
+              style= {{fontFamily: "cursive"}}
             >
               Novo
             </Button>
